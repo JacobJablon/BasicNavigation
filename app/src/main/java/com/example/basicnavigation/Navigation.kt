@@ -37,7 +37,7 @@ fun Navigation() {
             MainScreen(navController = navController)
         }
 
-        composable(Screen.DetailScreen.route,
+        composable(Screen.DetailScreen.route + "/{name}",
             arguments = listOf(
                 //need a navargument for each argument, we only have one
                 navArgument("name") {
@@ -46,7 +46,8 @@ fun Navigation() {
                     nullable = true
                 }
             )
-        ) {
+        ) { entry -> //access the arguments
+            DetailScreen(name = entry.arguments?.getString("name"))
 
         }
     }
@@ -77,7 +78,12 @@ fun MainScreen(navController: NavController) {
 
         Button(
             onClick = {
-                navController.navigate(Screen.DetailScreen.route)
+                navController.navigate(Screen.DetailScreen.withArgs(text)) {
+//                    popUpTo(Screen.MainScreen.route) {
+//                        inclusive = true
+//                    }
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.End)
         ) {
